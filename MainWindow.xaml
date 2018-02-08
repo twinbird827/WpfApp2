@@ -7,23 +7,21 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <Path Stroke="Red" StrokeThickness="1">
-            <Path.Data>
-                <PathGeometry>
-                    <PathGeometry.Figures>
-                        <PathFigureCollection>
-                            <PathFigure IsClosed="True" StartPoint="10,100">
-                                <PathFigure.Segments>
-                                    <PathSegmentCollection>
-                                        <LineSegment Point="100,100" />
-                                        <LineSegment Point="100,50" />
-                                    </PathSegmentCollection>
-                                </PathFigure.Segments>
-                            </PathFigure>
-                        </PathFigureCollection>
-                    </PathGeometry.Figures>
-                </PathGeometry>
-            </Path.Data>
-        </Path>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Content="再描写" Grid.Row="0" Click="Button_Click" />
+        <Grid Grid.Row="1" Margin="5"
+              RenderOptions.BitmapScalingMode="NearestNeighbor"
+              RenderOptions.EdgeMode="Aliased">
+            <local:Chart
+                x:Name="ChartSample"
+                HeaderX="X軸"
+                MinX="0"
+                MaxX="50"
+                ScaleSplitCountX="5"
+            />
+        </Grid>
     </Grid>
 </Window>
