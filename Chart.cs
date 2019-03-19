@@ -20,7 +20,7 @@ namespace WpfApp2
             LayoutUpdated += This_LayoutUpdated;
 
             // ｸﾞﾗﾌ内の余白(目盛り上限値が切れないような初期値)
-            Padding = new Thickness(0, 8, 8, 0);
+            Padding = new Thickness(0, 0,0, 0);
             
             // ｸﾞﾗﾌ枠線
             BorderBrush = Brushes.Gray;
@@ -126,29 +126,6 @@ namespace WpfApp2
                 // ｸﾞﾗﾌ描画位置の移動量をセット
                 var transTrans = new TranslateTransform(TranslateX, TranslateY);
                 dc.PushTransform(transTrans);
-                
-                // Y 軸の中心で反転をセット(左上原点補正)
-                var scaleTrans = new ScaleTransform();
-                scaleTrans.CenterY = GraphHeight / 2;
-                scaleTrans.ScaleY = -1;
-                dc.PushTransform(scaleTrans);
-
-                // ﾌﾚｰﾑからはみ出た描写を切り捨てる設定を追加
-                dc.PushClip(new RectangleGeometry(new Rect(0, 0, GraphWidth, GraphHeight+1)));
-
-                // ﾌﾚｰﾑを描画
-                dc.DrawGeometry(null, new Pen(BorderBrush, 1), DrawFrame());
-
-                // ｸﾞﾗﾌを描写
-                var tmp = Items.Select(i =>
-                {
-                    i.Redraw(dc, this);
-                    return i;
-                }).ToArray();
-
-                // 反転設定とはみ出し除去設定を解除
-                dc.Pop();
-                dc.Pop();
 
                 // X軸の表題
                 DrawXHeader(dc);
@@ -161,12 +138,41 @@ namespace WpfApp2
                     item.DrawYHeader(dc, this, y);
                     y -= item.GetHeaderYWidth();
                 }
+
+                // Y 軸の中心で反転をセット(左上原点補正)
+                var scaleTrans = new ScaleTransform();
+                scaleTrans.CenterY = GraphHeight / 2;
+                scaleTrans.ScaleY = -1;
+                dc.PushTransform(scaleTrans);
+
+                // ﾌﾚｰﾑを描画
+                dc.DrawGeometry(null, new Pen(BorderBrush, 1), DrawFrame(1));
+
+                //ﾌﾚｰﾑからはみ出た描写を切り捨てる設定を追加
+                dc.PushClip(new RectangleGeometry(new Rect(0, 0, GraphWidth, GraphHeight)));
+
+                // ｸﾞﾗﾌを描写
+                var tmp = Items.Select(i =>
+                {
+                    i.Redraw(dc, this);
+                    return i;
+                }).ToArray();
+
                 dc.Pop();
+
+                // ﾌﾚｰﾑを描画
+                dc.DrawGeometry(null, new Pen(BorderBrush, 1), DrawFrame(0));
+
+                // 反転設定とはみ出し除去設定を解除
+                dc.Pop();
+                dc.Pop();
+
             }
 
             // ｷｬﾝﾊﾞｽへ描画し、ｿｰｽへ反映
             //Canvas.Render(dv);
             Canvas.Render(Util.SetRenderOptions(dv));
+            
             Source = Canvas;
         }
 
@@ -175,7 +181,7 @@ namespace WpfApp2
         /// </summary>
         private void CalcInnerVariables()
         {
-            Padding.Right = Util.GetFormattedText(MaxX.ToString()).Width / 2 + 2;
+            Padding.Right = Util.GetFormattedText(MaxX.ToString()).Width / 2 ;
 
             // X軸のﾍｯﾀﾞの高さとY軸のﾍｯﾀﾞの幅を求める
             var t = Util.GetFormattedText(HeaderX);
@@ -184,7 +190,7 @@ namespace WpfApp2
 
             // 移動量を求める
             TranslateX = (int)(HeaderYWidth + Padding.Left);    // X軸への移動量は「Y軸のﾍｯﾀﾞの幅＋余白」
-            TranslateY = (int)(Padding.Top);                    // Y軸への移動量は「余白」
+            TranslateY = (int)(t.Height / 2 + Padding.Top);                    // Y軸への移動量は「余白」
 
             // ｷｬﾝﾊﾞｽの大きさ
             var dpi = (Double)DpiGetter.GetDpi(Orientation.Horizontal);
@@ -202,7 +208,7 @@ namespace WpfApp2
         /// ﾌﾚｰﾑと目盛りを描写する
         /// </summary>
         /// <returns></returns>
-        private Geometry DrawFrame()
+        private Geometry DrawFrame(int target)
         {
             // 描写する図のﾘｽﾄ
             var pathFigures = new List<PathFigure>();
@@ -212,39 +218,45 @@ namespace WpfApp2
             var minY = 0;
             var maxY = GraphHeight;
 
-            // ﾌﾚｰﾑの4隅を描写
-            pathFigures.Add(new PathFigure(
-                new Point(minX, minY),
-                new[]
-                {
+            if (target == 0)
+            {
+                // ﾌﾚｰﾑの4隅を描写
+                pathFigures.Add(new PathFigure(
+                    new Point(minX, minY),
+                    new[]
+                    {
                     new LineSegment(new Point(maxX, minY), true),
                     new LineSegment(new Point(maxX, maxY), true),
                     new LineSegment(new Point(minX, maxY), true)
-                },
-                true
-            ));
-
-            // Y軸の目盛り線を表示 (区切り位置は最初のｽｹｰﾙを使用する)
-            var item = Items.FirstOrDefault();
-            if (item != null)
+                    },
+                    false
+                ));
+            }
+            else
             {
+                // Y軸の目盛り線を表示 (区切り位置は最初のｽｹｰﾙを使用する)
+                var item = Items.FirstOrDefault();
+                if (item != null)
+                {
+                    pathFigures.AddRange(
+                        Enumerable.Range(0, item.ScaleSplitCountY).Select(i =>
+                        {
+                            var memoriY = (maxY - minY) / (item.ScaleSplitCountY);
+                            return Util.CreateLine(minX, memoriY * i, maxX, memoriY * i);
+                        })
+                    );
+                }
+
+                // X軸の目盛り線を表示
                 pathFigures.AddRange(
-                    Enumerable.Range(0, item.ScaleSplitCountY).Select(i =>
+                    Enumerable.Range(0, ScaleSplitCountX).Select(i =>
                     {
-                        var memoriY = (maxY - minY) / (item.ScaleSplitCountY);
-                        return Util.CreateLine(minX, memoriY * i, maxX, memoriY * i);
+                        var memoriX = (maxX - minX) / (ScaleSplitCountX);
+                        return Util.CreateLine(memoriX * i, minY, memoriX * i, maxY);
                     })
                 );
             }
 
-            // X軸の目盛り線を表示
-            pathFigures.AddRange(
-                Enumerable.Range(0, ScaleSplitCountX).Select(i =>
-                {
-                    var memoriX = (maxX - minX) / (ScaleSplitCountX);
-                    return Util.CreateLine(memoriX * i, minY, memoriX * i, maxY);
-                })
-            );
 
             // 結果を返却
             return new PathGeometry(pathFigures);
@@ -290,6 +302,7 @@ namespace WpfApp2
             {
                 CanvasHeight = p.ActualHeight;
                 CanvasWidth = p.ActualWidth;
+                Redraw();
             }
         }
     }

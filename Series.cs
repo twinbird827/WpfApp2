@@ -13,7 +13,7 @@ namespace WpfApp2
         /// <summary>
         /// 目盛りの描写位置の余白
         /// </summary>
-        private const int ScalePadding = 5;
+        private const int ScalePadding = 0;
 
         /// <summary>
         /// 線の色
@@ -77,7 +77,7 @@ namespace WpfApp2
                     // 目盛り値に紐付く凸型の線
                     dc.DrawLine(new Pen(LineBrush, 1),
                         new Point(beginX - ScalePadding, headerY),
-                        new Point(beginX - ScalePadding + Util.ScaleLineLength, headerY)
+                        new Point(beginX - ScalePadding - Util.ScaleLineLength, headerY)
                     );
                 }
 

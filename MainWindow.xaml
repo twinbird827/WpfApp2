@@ -5,23 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
+        Title="MainWindow" Height="350" Width="1025">
+    <Grid Background="DarkGray">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Button Content="再描写" Grid.Row="0" Click="Button_Click" />
-        <Grid Grid.Row="1" Margin="5"
-              RenderOptions.BitmapScalingMode="NearestNeighbor"
-              RenderOptions.EdgeMode="Aliased">
+        <Grid Grid.Row="1" Margin="0">
             <local:Chart
                 x:Name="ChartSample"
                 HeaderX="X軸"
                 MinX="0"
-                MaxX="50"
+                MaxX="10"
                 ScaleSplitCountX="5"
             />
         </Grid>
+
     </Grid>
 </Window>

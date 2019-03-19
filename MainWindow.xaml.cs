@@ -38,7 +38,97 @@ namespace WpfApp2
                     HeaderY = "TESTあいうえお",
                     MaxY = 12,
                     MinY = 2,
-                    LineBrush = Brushes.Black,
+                    LineBrush = Brushes.YellowGreen,
+                    LineThickness = 1,
+                    ScaleSplitCountY = 5,
+                    Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = r.Next(2, 13) })
+                },
+                new LineSeries()
+                {
+                    HeaderY = "TESTあいうえお",
+                    MaxY = 12,
+                    MinY = 2,
+                    LineBrush = Brushes.CornflowerBlue,
+                    LineThickness = 1,
+                    ScaleSplitCountY = 5,
+                    Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = r.Next(2, 13) })
+                },
+                new LineSeries()
+                {
+                    HeaderY = "TESTあいうえお",
+                    MaxY = 12,
+                    MinY = 2,
+                    LineBrush = Brushes.DarkOrange,
+                    LineThickness = 1,
+                    ScaleSplitCountY = 5,
+                    Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = r.Next(2, 13) })
+                },
+                new LineSeries()
+                {
+                    HeaderY = "TESTあいうえお",
+                    MaxY = 12,
+                    MinY = 2,
+                    LineBrush = Brushes.DodgerBlue,
+                    LineThickness = 1,
+                    ScaleSplitCountY = 5,
+                    Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = r.Next(2, 13) })
+                },
+                new LineSeries()
+                {
+                    HeaderY = "TESTあいうえお",
+                    MaxY = 12,
+                    MinY = 2,
+                    LineBrush = Brushes.Goldenrod,
+                    LineThickness = 1,
+                    ScaleSplitCountY = 5,
+                    Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = r.Next(2, 13) })
+                },
+                new LineSeries()
+                {
+                    HeaderY = "TESTあいうえお",
+                    MaxY = 12,
+                    MinY = 2,
+                    LineBrush = Brushes.LawnGreen,
+                    LineThickness = 1,
+                    ScaleSplitCountY = 5,
+                    Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = r.Next(2, 13) })
+                },
+                new LineSeries()
+                {
+                    HeaderY = "TESTあいうえお",
+                    MaxY = 12,
+                    MinY = 2,
+                    LineBrush = Brushes.LightPink,
+                    LineThickness = 1,
+                    ScaleSplitCountY = 5,
+                    Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = r.Next(2, 13) })
+                },
+                new LineSeries()
+                {
+                    HeaderY = "TESTあいうえお",
+                    MaxY = 12,
+                    MinY = 2,
+                    LineBrush = Brushes.MediumBlue,
+                    LineThickness = 1,
+                    ScaleSplitCountY = 5,
+                    Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = r.Next(2, 13) })
+                },
+                new LineSeries()
+                {
+                    HeaderY = "TESTあいうえお",
+                    MaxY = 12,
+                    MinY = 2,
+                    LineBrush = Brushes.MintCream,
+                    LineThickness = 1,
+                    ScaleSplitCountY = 5,
+                    Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = r.Next(2, 13) })
+                },
+                new LineSeries()
+                {
+                    HeaderY = "TESTあいうえお",
+                    MaxY = 12,
+                    MinY = 2,
+                    LineBrush = Brushes.PaleGoldenrod,
                     LineThickness = 1,
                     ScaleSplitCountY = 5,
                     Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = r.Next(2, 13) })
@@ -48,20 +138,20 @@ namespace WpfApp2
                     HeaderY = "TESTかきくけこ",
                     MaxY = 50,
                     MinY = 0,
-                    LineBrush = Brushes.Blue,
+                    LineBrush = Brushes.Red,
                     LineThickness = 1,
                     ScaleSplitCountY = 5,
-                    Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = r.Next(-10, 60) })
+                    Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = 12 })//r.Next(0, 51) })
                 },
                 new LineSeries()
                 {
                     HeaderY = "TESTさしすせそ",
                     MaxY = 500,
                     MinY = -500,
-                    LineBrush = Brushes.Red,
+                    LineBrush = Brushes.Tan,
                     LineThickness = 1,
                     ScaleSplitCountY = 5,
-                    Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = r.Next(-500, 501) })
+                    Lines = Enumerable.Range(0, MaxX+1).Select(i => new Line(){ X = i, Y = 150 })
                 }
             };
         }
